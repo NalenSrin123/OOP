@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+<style>
+    .modals{
+        width: 100%;
+        height: 100vh;
+        background-color: rgba(205, 204, 204, 0.771);
+        position: absolute;
+        top: 0;
+        display: none;
+    }
+    form{
+        width: 450px;
+        background-color: #fff;
+        margin: auto;
+        margin-top: 80px;
+        padding: 20px;
+        border-radius: 10px;
+    }
+</style>
+<body>
+    <div class="container"> 
+        <h2>Information of student</h2>
+        <button class="btn btn-primary float-end btnAdd">Add Student</button>
+        <table class="table table-striped align-middle" style="table-layout: fixed;">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Sex</th>
+                    <th>Score1</th>
+                    <th>Score2</th>
+                    <th>Score3</th>
+                    <th>Total</th>
+                    <th>Average</th>
+                    <th>Grade</th>
+                </tr>
+            </thead>
+            <tbody class="tbody">
+                
+            </tbody>
+        </table>
+    </div>
+    <div class="modals">
+        <form action="" >
+            <h4 class="text-center">Add Student</h4>
+            <div class="form-group">
+                <label for="id" class="form-label">ID</label>
+                <input type="text" name="" id="id" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="name" class="form-label">Name</label>
+                <input type="text" name="" id="name" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="sex" class="form-label">Sex</label>
+                <input type="text" name="" id="sex" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="score1" class="form-label">Score1</label>
+                <input type="text" name="" id="score1" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="score2" class="form-label">Score2</label>
+                <input type="text" name="" id="score2" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="score3" class="form-label">Score3</label>
+                <input type="text" name="" id="score3" class="form-control">
+            </div>
+            <div class="form-group">
+                <button type="button" class="mt-3 btn btn-success btnSave">Save</button>
+                <button class="mt-3 btn btn-danger btnCancel">Cancel</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
+<script>
+    class Data{
+        constructor(id,name,sex){
+            this.id=id;
+            this.name=name;
+            this.sex=sex;
+        }
+        toString(){
+            return this.id+' '+this.name+' '+this.sex;
+        }
+    }
+    class Student extends Data{
+        constructor(id,name,sex,score1,score2,score3){
+            super(id,name,sex);
+            this.score1=score1;
+            this.score2=score2;
+            this.score3=score3;
+        }
+        Total(){
+            return this.score1+this.score2+this.score3;
+        }
+        Average(){
+            return this.Total()/3;
+        }
+        Grade(){
+            var grade=  (this.Average()>=90) ? 'A' :
+                        (this.Average()>=80) ? 'B' :
+                        (this.Average()>=70) ? 'C' :
+                        (this.Average()>=60) ? 'D' :
+                        (this.Average()>=50) ? 'E' : 'F';
+            return grade;
+        }
+        showData=()=>{
+            return `<tr>
+                    <td>${this.id}</td>
+                    <td>${this.name}</td>
+                    <td>${this.sex}</td>
+                    <td>${this.score1}</td>
+                    <td>${this.score2}</td>
+                    <td>${this.score3}</td>
+                    <td>${this.Total()}</td>
+                    <td>${this.Average().toFixed(2)}</td>
+                    <td>${this.Grade()}</td>
+                </tr>`
+        }
+    }
+    const btnAdd=document.querySelector('.btnAdd');
+    const modals=document.querySelector('.modals')
+    btnAdd.addEventListener('click',()=>{
+        modals.style.display='block'
+    })
+    const btnCancel=document.querySelector('.btnCancel');
+    btnCancel.addEventListener('click',()=>{
+        modals.style.display='none'
+    })
+    const btnSave=document.querySelector('.btnSave');
+   
+    btnSave.addEventListener('click',()=>{
+        const id=document.getElementById('id').value;
+        const name=document.getElementById('name').value;
+        const sex=document.getElementById('sex').value;
+        const score1=document.getElementById('score1').value;
+        const score2=document.getElementById('score2').value;
+        const score3=document.getElementById('score3').value;
+        const tbody=document.querySelector('.tbody')
+        
+        student=new Student(id,name,sex,Number(score1),Number(score2),Number(score3));
+        modals.style.display='none'
+        tbody.innerHTML+=student.showData()
+    })
+</script>
